@@ -31,12 +31,21 @@ namespace Labyrinth
             } while (!player.IsFinished());
             stopwatch.Stop();
 
+            Thread.Sleep(500);
+            Console.ResetColor();
+            Console.Clear();
+
             TimeSpan time = stopwatch.Elapsed;
             string elapsedTime = string.Format("{0:00}:{1:00}.{2:00}", time.Minutes, time.Seconds, time.Milliseconds / 10);
 
-            Console.SetCursorPosition(Console.WindowWidth / 2 + 2, Console.WindowTop);
-            Console.Write("Вы прошли лабиринт за {0}!", elapsedTime);
-            Console.SetCursorPosition(Console.WindowWidth / 2 + 2, Console.WindowTop + 1);
+            Console.WriteLine("Вы прошли лабиринт за {0}!", elapsedTime);
+            Console.WriteLine("Нажмите любую клавишу чтобы продолжить или Escape чтобы выйти.");
+
+            ConsoleKeyInfo cki = Console.ReadKey(true);
+            Console.Clear();
+
+            if (cki.Key != ConsoleKey.Escape)
+                Main();
         }
     }
 }
