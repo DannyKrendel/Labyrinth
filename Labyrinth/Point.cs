@@ -47,7 +47,7 @@ namespace Labyrinth
 
         public override string ToString()
         {
-            return value + ", " + x + ", " + y + ", ";
+            return value + ", " + x + ", " + y;
         }
     }
 }

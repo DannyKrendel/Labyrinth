@@ -12,8 +12,7 @@ namespace Labyrinth
             get => x;
             set
             {
-                if (!Labyrinth.WallList.Any(p => p.x == value && p.y == y))
-                    x = value;
+                x = value;
             }
         }
 
@@ -22,8 +21,7 @@ namespace Labyrinth
             get => y;
             set
             {
-                if (!Labyrinth.WallList.Any(p => p.y == value && p.x == x))
-                    y = value;
+                y = value;
             }
         }
 
