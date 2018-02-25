@@ -99,7 +99,7 @@ namespace Labyrinth
                 a.walls[(int)Direction.Left] = false;
                 b.walls[(int)Direction.Right] = false;
             }
-            else if (x == -2)
+            else if (x == -2) 
             {
                 WallList.RemoveAll(p => p.x == a.X + 1 && p.y == a.Y);
                 a.walls[(int)Direction.Right] = false;
