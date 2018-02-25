@@ -5,6 +5,8 @@ namespace Labyrinth
 {
     class Player : Point
     {
+        public char Value { get => value; set => base.value = value; }
+
         public int X
         {
             get => x;
@@ -25,34 +27,28 @@ namespace Labyrinth
             }
         }
 
-        public char Ch { get => ch; set => ch = value; }
-
         Point startPoint;
         Point endPoint;
 
-        public Player(char ch)
+        public Player(char value)
         {
-            startPoint = new Point(1, 1, ' ');
-            endPoint = new Point(Labyrinth.Width * 2 - 1, Labyrinth.Height * 2 - 1, ' ');
+            Value = value;
+            X = 1;
+            Y = 1;
 
-            x = 1;
-            y = 1;
-            Ch = ch;
+            startPoint = new Point(' ', X, Y);
+            endPoint = new Point(' ', Labyrinth.Width * 2 - 1, Labyrinth.Height * 2 - 1);
         }
 
         public void Update()
         {
-            Console.BackgroundColor = ConsoleColor.Green;
-            startPoint.Draw();
-            Console.BackgroundColor = ConsoleColor.Red;
-            endPoint.Draw();
+            startPoint.Display(Console.ForegroundColor, ConsoleColor.Green);
+            endPoint.Display(Console.ForegroundColor, ConsoleColor.Red);
             
 
             if (Console.KeyAvailable == true)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.BackgroundColor = ConsoleColor.DarkGreen;
-                Undraw();
+                Erase(ConsoleColor.Green, ConsoleColor.DarkGreen);
 
                 ConsoleKeyInfo cki = Console.ReadKey(true);
 
@@ -75,7 +71,7 @@ namespace Labyrinth
                         Y -= 1;
                         break;
                 }
-                Draw();
+                Display(Console.ForegroundColor, Console.BackgroundColor);
             }
         }
 

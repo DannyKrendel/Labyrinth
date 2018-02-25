@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Labyrinth
 {
-    class Cell
+    class Cell : Color
     {
-        private int x;
-        private int y;
+        int x;
+        int y;
 
         public int X
         {
@@ -20,6 +20,7 @@ namespace Labyrinth
         }
 
         public bool[] walls;
+
         public bool isVisited;
 
         public Cell(int x, int y)
@@ -28,86 +29,47 @@ namespace Labyrinth
             Y = y;
 
             walls = new bool[] { true, true, true, true };
+
             isVisited = false;
         }
 
-        public void Draw()
+        public void Display()
         {
-            if (isVisited)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.BackgroundColor = ConsoleColor.DarkGreen;
-            }
-
             Console.SetCursorPosition(X, Y);
-            Console.Write(' ');
+            if (isVisited)
+                ColorDisplay(" ", ConsoleColor.DarkGreen, ConsoleColor.DarkGreen);
 
-            Console.ResetColor();
+            ColorDisplay(" ", Console.ForegroundColor, Console.BackgroundColor);
 
-            char c = ' ';
+            DisplayWalls();
+        }
 
-            // Отрисовка стен
-            if (walls[(int)Direction.Top])
+        void DisplayWalls()
+        {
+            Point p = new Point();
+
+            for (int i = 0; i < walls.Length; i++)
             {
-                Point p = new Point(X, Y - 1, c);
-                p.Draw();
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.BackgroundColor = ConsoleColor.DarkGreen;
-                Point p = new Point(X, Y - 1, c);
-                p.Undraw();
-                Console.ResetColor();
-            }
-            if (walls[(int)Direction.Right])
-            {
-                Point p = new Point(X + 1, Y, c);
-                p.Draw();
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.BackgroundColor = ConsoleColor.DarkGreen;
-                Point p = new Point(X + 1, Y, c);
-                p.Undraw();
-                Console.ResetColor();
-            }
-            if (walls[(int)Direction.Bottom])
-            {
-                Point p = new Point(X, Y + 1, c);
-                p.Draw();
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.BackgroundColor = ConsoleColor.DarkGreen;
-                Point p = new Point(X, Y + 1, c);
-                p.Undraw();
-                Console.ResetColor();
-            }
-            if (walls[(int)Direction.Left])
-            {
-                Point p = new Point(X - 1, Y, c);
-                p.Draw();
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.BackgroundColor = ConsoleColor.DarkGreen;
-                Point p = new Point(X - 1, Y, c);
-                p.Undraw();
-                Console.ResetColor();
+                if (i == (int)Direction.Top)
+                    p = new Point(' ', X, Y - 1);
+                else if (i == (int)Direction.Right)
+                    p = new Point(' ', X + 1, Y);
+                else if (i == (int)Direction.Bottom)
+                    p = new Point(' ', X, Y + 1);
+                else if (i == (int)Direction.Left)
+                    p = new Point(' ', X - 1, Y);
+
+                if (walls[i])
+                    p.Display(Console.ForegroundColor, Console.BackgroundColor);
+                else
+                    p.Display(ConsoleColor.DarkGreen, ConsoleColor.DarkGreen);
             }
         }
 
         internal void Highlight()
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.BackgroundColor = ConsoleColor.Green;
-            Point p = new Point(X, Y, ' ');
-            p.Draw();
-            Console.ResetColor();
+            Point p = new Point(' ', X, Y);
+            p.Display(ConsoleColor.Green, ConsoleColor.Green);
         }
 
         internal Cell CheckNeighbors()

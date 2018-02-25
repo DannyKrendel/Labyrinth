@@ -2,55 +2,52 @@
 
 namespace Labyrinth
 {
-    class Point
+    class Point : Color
     {
+        public char value;
         public int x;
         public int y;
-        public char ch;
 
-        public Point()
+        public Point() { }
+
+        public Point(char value, int x, int y)
         {
-
-        }
-
-        public Point(int x, int y, char ch)
-        {
+            this.value = value;
             this.x = x;
             this.y = y;
-            this.ch = ch;
         }
 
-        public virtual void Draw()
+        public void Display(ConsoleColor fgColor, ConsoleColor bgColor)
         {
             Console.SetCursorPosition(x, y);
-            Console.Write(ch);
+            ColorDisplay(value.ToString(), fgColor, bgColor);
         }
 
-        public virtual void Undraw()
+        public void Erase(ConsoleColor fgColor, ConsoleColor bgColor)
         {
             Console.SetCursorPosition(x, y);
-            Console.Write(' ');
+            ColorDisplay(" ", fgColor, bgColor);
         }
 
-        public virtual bool IsCollidingWith(Point p)
+        public bool IsCollidingWith(Point p)
         {
-            return p.x == x && p.y == y;
+            return x == p.x && y == p.y;
         }
 
         // Перегрузка операторов
         public static Point operator +(Point p1, Point p2)
         {
-            return new Point(p1.x + p2.x, p1.y + p2.y, p1.ch);
+            return new Point(p1.value, p1.x + p2.x, p1.y + p2.y);
         }
 
         public static Point operator -(Point p1, Point p2)
         {
-            return new Point(p1.x - p2.x, p1.y - p2.y, p1.ch);
+            return new Point(p1.value, p1.x - p2.x, p1.y - p2.y);
         }
 
         public override string ToString()
         {
-            return x + ", " + y + ", " + ch;
+            return value + ", " + x + ", " + y + ", ";
         }
     }
 }

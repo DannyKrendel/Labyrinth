@@ -38,7 +38,7 @@ namespace Labyrinth
             {
                 for (int j = 0; j < Width * 2 + 1; j++)
                 {
-                    Point p = new Point(j, i, ' ');
+                    Point p = new Point(' ', j, i);
                     WallList.Add(p);
                 }
             }
@@ -50,9 +50,7 @@ namespace Labyrinth
         {
             foreach (Point p in WallList)
             {
-                Console.ForegroundColor = ConsoleColor.DarkBlue;
-                Console.BackgroundColor = ConsoleColor.DarkBlue;
-                p.Draw();
+                p.Display(ConsoleColor.DarkBlue, ConsoleColor.DarkBlue);
                 Console.ResetColor();
             }
         }
@@ -69,7 +67,7 @@ namespace Labyrinth
             }
 
             WallList.RemoveAll(p => p.x == currentCell.X && p.y == currentCell.Y);
-            currentCell.Draw();
+            currentCell.Display();
 
             if (nextCell != null)
             {
