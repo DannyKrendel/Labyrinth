@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Labyrinth
 {
     abstract class Color
     {
-        protected void ColorDisplay(string str, ConsoleColor fgColor, ConsoleColor bgColor)
+        protected static void ColorDisplay(string str, ConsoleColor fgColor, ConsoleColor bgColor)
         {
             ConsoleColor defaultFg = Console.ForegroundColor;
             ConsoleColor defaultBg = Console.BackgroundColor;

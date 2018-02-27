@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Labyrinth
+﻿namespace Labyrinth
 {
     public interface IMainUserInterface
     {
@@ -18,9 +12,6 @@ namespace Labyrinth
 
     public interface IGame
     {
-        void DisplayField();
-        void DisplayCell();
-        void MakeMove(ConsoleKeyInfo cki);
-        bool IsWon();
+        bool Update();
     }
 }

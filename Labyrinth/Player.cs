@@ -1,83 +1,52 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Labyrinth
 {
     class Player : Point
     {
-        public char Value { get => value; set => base.value = value; }
+        List<Cell> walls;
 
-        public int X
+        public Player(char value, List<Cell> walls) : base(value, 1, 1)
         {
-            get => x;
-            set
-            {
-                if (!Labyrinth.WallList.Any(p => p.x == value && p.y == y))
-                    x = value;
-            }
+            this.walls = walls;
         }
 
-        public int Y
+        public void HandleKey(ConsoleKeyInfo cki)
         {
-            get => y;
-            set
+            switch (cki.Key)
             {
-                if (!Labyrinth.WallList.Any(p => p.y == value && p.x == x))
-                    y = value;
-            }
-        }
-
-        Point startPoint;
-        Point endPoint;
-
-        public Player(char value)
-        {
-            Value = value;
-            X = 1;
-            Y = 1;
-
-            startPoint = new Point(' ', X, Y);
-            endPoint = new Point(' ', Labyrinth.Width * 2 - 1, Labyrinth.Height * 2 - 1);
-        }
-
-        public void Update()
-        {
-            startPoint.Display(Console.ForegroundColor, ConsoleColor.Green);
-            endPoint.Display(Console.ForegroundColor, ConsoleColor.Red);
-            
-
-            if (Console.KeyAvailable == true)
-            {
-                Erase(ConsoleColor.Green, ConsoleColor.DarkGreen);
-
-                ConsoleKeyInfo cki = Console.ReadKey(true);
-
-                switch (cki.Key)
-                {
-                    case ConsoleKey.D:
-                    case ConsoleKey.RightArrow:
-                        X += 1;
-                        break;
-                    case ConsoleKey.A:
-                    case ConsoleKey.LeftArrow:
-                        X -= 1;
-                        break;
-                    case ConsoleKey.S:
-                    case ConsoleKey.DownArrow:
-                        Y += 1;
-                        break;
-                    case ConsoleKey.W:
-                    case ConsoleKey.UpArrow:
+                case ConsoleKey.D:
+                case ConsoleKey.RightArrow:
+                    Y += 1;
+                    if (IsCollidingWithWall())
                         Y -= 1;
-                        break;
-                }
-                Display(Console.ForegroundColor, Console.BackgroundColor);
+                    break;
+                case ConsoleKey.A:
+                case ConsoleKey.LeftArrow:
+                    Y -= 1;
+                    if (IsCollidingWithWall())
+                        Y += 1;
+                    break;
+                case ConsoleKey.S:
+                case ConsoleKey.DownArrow:
+                    X += 1;
+                    if (IsCollidingWithWall())
+                        X -= 1;
+                    break;
+                case ConsoleKey.W:
+                case ConsoleKey.UpArrow:
+                    X -= 1;
+                    if (IsCollidingWithWall())
+                        X += 1;
+                    break;
             }
         }
 
-        public bool IsFinished()
+        public bool IsCollidingWithWall()
         {
-            return IsCollidingWith(endPoint);
+            return walls.Any(c => c.IsCollidingWith(this));
         }
     }
 }

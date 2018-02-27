@@ -46,7 +46,9 @@
     <Compile Include="Color.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="GameLoop.cs" />
     <Compile Include="Interfaces.cs" />
+    <Compile Include="MainUserInterface.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Program.cs" />

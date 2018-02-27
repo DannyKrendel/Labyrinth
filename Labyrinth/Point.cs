@@ -2,52 +2,50 @@
 
 namespace Labyrinth
 {
-    class Point : Color
+    abstract class Point : Color
     {
-        public char value;
-        public int x;
-        public int y;
+        // Point value and coordinates
+        public virtual char Value { get; set; }
+        public virtual int X { get; set; }
+        public virtual int Y { get; set; }
 
+        // Constructors
         public Point() { }
 
         public Point(char value, int x, int y)
         {
-            this.value = value;
-            this.x = x;
-            this.y = y;
+            Value = value;
+            X = x;
+            Y = y;
         }
 
-        public void Display(ConsoleColor fgColor, ConsoleColor bgColor)
+        // Display point with certain colors
+        public virtual void Display(ConsoleColor fgColor, ConsoleColor bgColor)
         {
-            Console.SetCursorPosition(x, y);
-            ColorDisplay(value.ToString(), fgColor, bgColor);
+            Console.SetCursorPosition(Y, X);
+            ColorDisplay(Value.ToString(), fgColor, bgColor);
         }
 
-        public void Erase(ConsoleColor fgColor, ConsoleColor bgColor)
+        // Erase point with certain colors
+        public virtual void Erase(ConsoleColor fgColor, ConsoleColor bgColor)
         {
-            Console.SetCursorPosition(x, y);
+            Console.SetCursorPosition(Y, X);
             ColorDisplay(" ", fgColor, bgColor);
         }
 
-        public bool IsCollidingWith(Point p)
+        // Is point colliding with another point
+        public virtual bool IsCollidingWith(Point p)
         {
-            return x == p.x && y == p.y;
+            return X == p.X && Y == p.Y;
         }
 
-        // Перегрузка операторов
-        public static Point operator +(Point p1, Point p2)
-        {
-            return new Point(p1.value, p1.x + p2.x, p1.y + p2.y);
-        }
-
-        public static Point operator -(Point p1, Point p2)
-        {
-            return new Point(p1.value, p1.x - p2.x, p1.y - p2.y);
-        }
+        #region overloading section
 
         public override string ToString()
         {
-            return value + ", " + x + ", " + y + ", ";
+            return $"\"{Value}\", {X}, {Y}";
         }
+
+        #endregion
     }
 }
