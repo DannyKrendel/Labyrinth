@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Threading;
 
 namespace Labyrinth
 {
@@ -11,10 +9,11 @@ namespace Labyrinth
         public char PlayerSym { get; }
         public int GenSpeed { get; }
 
-        public Labyrinth labyrinth;
-        public Player player;
+        Labyrinth labyrinth;
+        Player player;
 
-        Stopwatch stopwatch = new Stopwatch();
+        Cell Start { get; }
+        Cell End { get; }
 
         public Game(int height, int width, char playerSym, int genSpeed)
         {
@@ -22,49 +21,40 @@ namespace Labyrinth
             Width = width;
             PlayerSym = playerSym;
             GenSpeed = genSpeed;
+
+            Start = new Cell(1, 1);
+            End = new Cell(Height - 2, Width - 2);
         }
 
-        public bool Update()
+        // Display field, each time generating a new one
+        public void DisplayField()
         {
             labyrinth = new Labyrinth(Height, Width);
             player = new Player(PlayerSym, labyrinth.Walls);
 
             labyrinth.Generate(GenSpeed);
 
-            stopwatch.Start();
+            Start.Display(Console.ForegroundColor, ConsoleColor.Green);
+            End.Display(Console.ForegroundColor, ConsoleColor.Red);
+        }
 
-            do
-            {
-                if (Console.KeyAvailable == true)
-                {
-                    player.Erase(ConsoleColor.Green, ConsoleColor.DarkGreen);
+        // Display player cell
+        public void DisplayPlayer()
+        {
+            player.Display(Console.ForegroundColor, Console.BackgroundColor);
+        }
 
-                    player.HandleKey(Console.ReadKey(true));
+        // Move player
+        public void HandleKey(ConsoleKeyInfo cki)
+        {
+            player.Erase(ConsoleColor.Green, ConsoleColor.DarkGreen);
+            player.HandleKey(cki);
+        }
 
-                    player.Display(Console.ForegroundColor, Console.BackgroundColor);
-                }
-            } while (!player.IsCollidingWith(labyrinth.EndCell));
-
-            stopwatch.Stop();
-
-            Thread.Sleep(500);
-            Console.ResetColor();
-            Console.Clear();
-
-            TimeSpan time = stopwatch.Elapsed;
-            string elapsedTime = string.Format("{0:00}:{1:00}.{2:00}", time.Minutes, time.Seconds, time.Milliseconds / 10);
-
-            Console.WriteLine("You've competed labyrinth in {0}!", elapsedTime);
-            Console.WriteLine("Press any button to continue or Escape to quit to menu.");
-
-            ConsoleKeyInfo cki = Console.ReadKey(true);
-            Console.Clear();
-
-            stopwatch.Reset();
-
-            if (cki.Key == ConsoleKey.Escape)
-                return false;
-            return true;
+        // Game is won when player gets to end cell
+        public bool IsWon()
+        {
+            return player.IsCollidingWith(End);
         }
     }
 }

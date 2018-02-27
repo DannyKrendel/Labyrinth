@@ -8,11 +8,13 @@ namespace Labyrinth
     {
         List<Cell> walls;
 
+        // Walls initialization, value and coordinates go to base constructor
         public Player(char value, List<Cell> walls) : base(value, 1, 1)
         {
             this.walls = walls;
         }
 
+        // Handle pressed key
         public void HandleKey(ConsoleKeyInfo cki)
         {
             switch (cki.Key)
@@ -44,7 +46,8 @@ namespace Labyrinth
             }
         }
 
-        public bool IsCollidingWithWall()
+        // Check if walls list contains player coordinates 
+        bool IsCollidingWithWall()
         {
             return walls.Any(c => c.IsCollidingWith(this));
         }

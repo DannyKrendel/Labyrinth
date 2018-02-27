@@ -9,9 +9,6 @@ namespace Labyrinth
         public virtual int X { get; set; }
         public virtual int Y { get; set; }
 
-        // Constructors
-        public Point() { }
-
         public Point(char value, int x, int y)
         {
             Value = value;
@@ -33,19 +30,10 @@ namespace Labyrinth
             ColorDisplay(" ", fgColor, bgColor);
         }
 
-        // Is point colliding with another point
+        // Check if point colliding with another point
         public virtual bool IsCollidingWith(Point p)
         {
             return X == p.X && Y == p.Y;
         }
-
-        #region overloading section
-
-        public override string ToString()
-        {
-            return $"\"{Value}\", {X}, {Y}";
-        }
-
-        #endregion
     }
 }

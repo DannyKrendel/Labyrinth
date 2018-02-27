@@ -4,11 +4,10 @@ namespace Labyrinth
 {
     class Cell : Point
     {
+        // 4 walls on each direction
         public bool[] walls;
 
         public bool isVisited;
-
-        public Cell() { }
 
         public Cell(int x, int y) : base(' ', x, y)
         {
@@ -19,17 +18,19 @@ namespace Labyrinth
 
         public void Display()
         {
+            // Not displaying cell that hasn't been visited
             if (isVisited)
                 Display(ConsoleColor.DarkGreen, ConsoleColor.DarkGreen);
             else
                 Display(Console.ForegroundColor, Console.BackgroundColor);
 
+            // Displaying available walls around each cell
             DisplayWalls();
         }
 
         void DisplayWalls()
         {
-            Cell c = new Cell();
+            Cell c = null;
 
             for (int i = 0; i < walls.Length; i++)
             {
@@ -42,6 +43,8 @@ namespace Labyrinth
                 else if (i == (int)Direction.Left)
                     c = new Cell(X, Y - 1);
 
+                // If wall is enabled - don't display anything
+                // If wall is disabled - display as normal cell
                 if (walls[i])
                     c.Display(Console.ForegroundColor, Console.BackgroundColor);
                 else
@@ -49,6 +52,7 @@ namespace Labyrinth
             }
         }
 
+        // Highlight current cell
         public void Highlight()
         {
             Display(ConsoleColor.Green, ConsoleColor.Green);

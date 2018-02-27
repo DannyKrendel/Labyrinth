@@ -4,7 +4,8 @@ namespace Labyrinth
 {
     abstract class Color
     {
-        protected static void ColorDisplay(string str, ConsoleColor fgColor, ConsoleColor bgColor)
+        // Any hereditary class can use this function to display string in color
+        protected void ColorDisplay(string str, ConsoleColor fgColor, ConsoleColor bgColor)
         {
             ConsoleColor defaultFg = Console.ForegroundColor;
             ConsoleColor defaultBg = Console.BackgroundColor;

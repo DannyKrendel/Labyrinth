@@ -7,17 +7,19 @@ namespace Labyrinth
 {
     class Labyrinth
     {
+        // Field parameters
         public int Height { get; }
         public int Width { get; }
 
+        // Cells for player to move on
         public List<Cell> Cells { get; }
+        // Walls to form an actual labyrinth
         public List<Cell> Walls { get; }
 
-        public Cell StartCell { get; }
-        public Cell EndCell { get; }
-
+        // Beginning generation with this cell
         Cell currentCell;
 
+        // Stack for recursive generation algorithm
         Stack<Cell> stack = new Stack<Cell>();
 
         public Labyrinth(int height, int width)
@@ -25,6 +27,7 @@ namespace Labyrinth
             Cells = new List<Cell>();
             Walls = new List<Cell>();
 
+            // Setting an odd number even if it's even
             Height = height % 2 == 0 ? height - 1 : height;
             Width = width % 2 == 0 ? width - 1 : width;
 
@@ -46,23 +49,26 @@ namespace Labyrinth
                 }
             }
 
+            // Always beginning generation with a first cell (1, 1)
             currentCell = Cells.First();
-
-            StartCell = new Cell(1, 1);
-            EndCell = new Cell(Height - 2, Width - 2);
         }
 
+        // Generating a labyrinth with latency to see the process
         public void Generate(int latency)
         {
             do
             {
+                // Always marking current cell as visited
                 currentCell.isVisited = true;
 
+                // Getting random neighbor cell as a next one
                 Cell nextCell = GetNeighbor(currentCell);
 
+                // If there is at least one available neighbor - remove walls between current and next cell
                 if (nextCell != null)
                     RemoveWalls(currentCell, nextCell);
 
+                // Removing wall that is equal to current cell
                 foreach (Cell wall in Walls)
                 {
                     if (wall.X == currentCell.X && wall.Y == currentCell.Y)
@@ -74,10 +80,11 @@ namespace Labyrinth
 
                 currentCell.Display();
 
+                // If there is available next cell - pushing current cell to stack and assigning next to current
+                // Else - backtracking to cell that has at least one available neighbor
                 if (nextCell != null)
                 {
                     stack.Push(currentCell);
-                    nextCell.isVisited = true;
                     currentCell = nextCell;
                 }
                 else if (stack.Count > 0)
@@ -89,21 +96,21 @@ namespace Labyrinth
 
                 Thread.Sleep(latency);
 
+                // Algorithm is done when current cell is back at the beginning
             } while (!IsCompleted());
 
             // Display walls
             foreach (Cell c in Walls)
                 c.Display(ConsoleColor.DarkBlue, ConsoleColor.DarkBlue);
-
-            StartCell.Display(Console.ForegroundColor, ConsoleColor.Green);
-            EndCell.Display(Console.ForegroundColor, ConsoleColor.Red);
         }
 
         void RemoveWalls(Cell a, Cell b)
         {
+            // Assigning coordinates of a wall between a and b
             int x = (a.X != b.X) ? (a.X > b.X ? a.X - 1 : a.X + 1) : a.X;
             int y = (a.Y != b.Y) ? (a.Y > b.Y ? a.Y - 1 : a.Y + 1) : a.Y;
 
+            // Removing wall
             foreach (Cell wall in Walls)
             {
                 if (wall.X == x && wall.Y == y)
@@ -113,6 +120,7 @@ namespace Labyrinth
                 }
             }
 
+            // Disabling corresponding wall for each cell
             if (a.X - b.X == 2)
             {
                 a.walls[(int)Direction.Top] = false;
@@ -142,6 +150,7 @@ namespace Labyrinth
 
             List<Cell> neighbors = new List<Cell>();
 
+            // Assigning available neighbor cells
             Cell top = (cell.X - 2 > 0) ? Cells.Find(c => c.X == cell.X - 2 && c.Y == cell.Y) : null;
             Cell right = (cell.Y + 2 < Width - 1) ? Cells.Find(c => c.Y == cell.Y + 2 && c.X == cell.X) : null;
             Cell bottom = (cell.X + 2 < Height - 1) ? Cells.Find(c => c.X == cell.X + 2 && c.Y == cell.Y) : null;
@@ -164,14 +173,17 @@ namespace Labyrinth
                 neighbors.Add(left);
             }
 
+            // Returning random neigbor from a list
             if (neighbors.Count > 0)
             {
                 int index = rand.Next(neighbors.Count);
                 return neighbors[index];
             }
+            // Else return no neighbor
             return null;
         }
 
+        // If stack is empty then labyrinth is generated successfully
         bool IsCompleted()
         {
             return stack.Count == 0;
