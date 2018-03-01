@@ -16,19 +16,19 @@ namespace Labyrinth
             isVisited = false;
         }
 
-        public void Display()
+        public void Display(ConsoleColor bgColor)
         {
             // Not displaying cell that hasn't been visited
             if (isVisited)
-                Display(ConsoleColor.DarkGreen, ConsoleColor.DarkGreen);
+                Display(Console.ForegroundColor, bgColor);
             else
                 Display(Console.ForegroundColor, Console.BackgroundColor);
 
             // Displaying available walls around each cell
-            DisplayWalls();
+            DisplayWalls(bgColor);
         }
 
-        void DisplayWalls()
+        void DisplayWalls(ConsoleColor bgColor)
         {
             Cell c = null;
 
@@ -48,11 +48,10 @@ namespace Labyrinth
                 if (walls[i])
                     c.Display(Console.ForegroundColor, Console.BackgroundColor);
                 else
-                    c.Display(ConsoleColor.DarkGreen, ConsoleColor.DarkGreen);
+                    c.Display(Console.ForegroundColor, bgColor);
             }
         }
 
-        // Highlight current cell
         public void Highlight()
         {
             Display(ConsoleColor.Green, ConsoleColor.Green);

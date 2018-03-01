@@ -17,6 +17,7 @@ namespace Labyrinth
     // This interface should be implemented by game object
     public interface IGame
     {
+        void Initialize();
         void DisplayField();
         void DisplayPlayer();
         void HandleKey(ConsoleKeyInfo cki);

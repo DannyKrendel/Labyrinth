@@ -43,7 +43,10 @@ namespace Labyrinth
             Console.Clear();
 
             if (cki.Key != ConsoleKey.Escape)
+            {
+                game.Initialize();
                 Run(game);
+            }
         }
     }
 }

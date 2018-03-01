@@ -21,6 +21,7 @@ namespace Labyrinth
                 switch (key)
                 {
                     case "1":
+                        game.Initialize();
                         gameLoop.Run(game);
                         break;
                     case "2":

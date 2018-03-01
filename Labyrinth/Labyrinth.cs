@@ -22,7 +22,11 @@ namespace Labyrinth
         // Stack for recursive generation algorithm
         Stack<Cell> stack = new Stack<Cell>();
 
-        public Labyrinth(int height, int width)
+        // Colors
+        public ConsoleColor FieldColor { get; }
+        public ConsoleColor WallsColor { get; }
+
+        public Labyrinth(int height, int width, ConsoleColor fieldColor, ConsoleColor wallsColor)
         {
             Cells = new List<Cell>();
             Walls = new List<Cell>();
@@ -48,6 +52,10 @@ namespace Labyrinth
                     Walls.Add(new Cell(i, j));
                 }
             }
+
+            // Adding colors
+            FieldColor = fieldColor;
+            WallsColor = wallsColor;
 
             // Always beginning generation with a first cell (1, 1)
             currentCell = Cells.First();
@@ -78,7 +86,7 @@ namespace Labyrinth
                     }
                 }
 
-                currentCell.Display();
+                currentCell.Display(FieldColor);
 
                 // If there is available next cell - pushing current cell to stack and assigning next to current
                 // Else - backtracking to cell that has at least one available neighbor
@@ -88,11 +96,10 @@ namespace Labyrinth
                     currentCell = nextCell;
                 }
                 else if (stack.Count > 0)
-                {
                     currentCell = stack.Pop();
-                }
 
-                currentCell.Highlight();
+                // Highlight current cell
+                currentCell.Display(ConsoleColor.Green, ConsoleColor.Green);
 
                 Thread.Sleep(latency);
 
@@ -101,7 +108,7 @@ namespace Labyrinth
 
             // Display walls
             foreach (Cell c in Walls)
-                c.Display(ConsoleColor.DarkBlue, ConsoleColor.DarkBlue);
+                c.Display(WallsColor, WallsColor);
         }
 
         void RemoveWalls(Cell a, Cell b)

@@ -27,7 +27,7 @@ namespace Labyrinth
         public virtual void Erase(ConsoleColor fgColor, ConsoleColor bgColor)
         {
             Console.SetCursorPosition(Y, X);
-            ColorDisplay(" ", fgColor, bgColor);
+            ColorDisplay(" ", Console.ForegroundColor, bgColor);
         }
 
         // Check if point colliding with another point
